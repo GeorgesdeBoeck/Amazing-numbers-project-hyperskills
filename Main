@@ -1,0 +1,368 @@
+package numbers;
+
+import java.util.*;
+
+public class Main {
+
+    public static void main(String[] args) {
+        System.out.println("Welcome to Amazing Numbers!\n");
+        System.out.println("Supported requests:");
+        System.out.println("- enter a natural number to know its properties");
+        System.out.println("- enter two natural numbers to obtain the properties of the list:");
+        System.out.println("    * the first parameter represents a starting number;");
+        System.out.println("    * the second parameters show how many consecutive numbers are to be processed;");
+        System.out.println("- two natural numbers and properties to search for;");
+        System.out.println("- a property preceded by minus must not be present in numbers;");
+        System.out.println("- separate the parameters with one space;");
+        System.out.println("- enter 0 to exit.");
+
+        amazingNumbers();
+    }
+
+    public static boolean checkEven(long input) {
+        return input % 2 == 0;
+    }
+
+    public static boolean checkBuzz(long input) {
+        return (input % 10 == 7 || input % 7 == 0);
+    }
+
+    public static boolean checkDuck(long input) {
+        return (String.valueOf(input).contains("0"));
+    }
+
+    public static boolean checkPalindrome(long input) {
+        String inputString = String.valueOf(input);
+        String inputStringReverse = "";
+
+        for (int i = 0; i < String.valueOf(input).length(); i++) {
+            inputStringReverse += inputString.charAt(String.valueOf(input).length() - 1 - i);
+        }
+        return (inputString.equals(inputStringReverse));
+    }
+
+    public static boolean checkGapful(long input) {
+        String inputString = String.valueOf(input);
+
+        if (inputString.length() > 2) {
+            String gapString = String.valueOf(inputString.charAt(0));
+            gapString += inputString.charAt(inputString.length() - 1);
+            long gapTester = Integer.parseInt(gapString);
+
+            return (input % gapTester == 0);
+        } else {
+            return false;
+        }
+    }
+
+    public static boolean checkSpy(long input) {
+        long product = checkProduct(input);
+        long sum = checkSum(input);
+
+        return product == sum;
+    }
+
+    public static boolean checkSunny(long input) {
+        double checkSunny = input + 1;
+
+        return Math.sqrt(checkSunny) % 1 == 0;
+    }
+
+    public static boolean checkSquare(long input) {
+        double inputDouble = input;
+
+        return Math.sqrt(inputDouble) % 1 == 0;
+    }
+
+    public static boolean areAllTrue(boolean[] array) {
+        for (boolean b : array) if (!b) return false;
+        return true;
+    }
+
+    public static List<String> checkProperties(String[] allProperties, List<String> propertyList) {
+        List<String> allPropertiesArray = Arrays.asList(allProperties);
+        List<String> faultyProperties = new ArrayList<>();
+
+        for (int i = 0; i < propertyList.size(); i++) {
+            if (!allPropertiesArray.contains(propertyList.get(i))) {
+                faultyProperties.add(propertyList.get(i));
+            }
+        }
+        return faultyProperties;
+    }
+
+    public static long checkProduct(long input) {
+        String inputNumber = String.valueOf(input);
+        long product = 1;
+        String digits[] = inputNumber.split("");
+
+        for (int i = 0; i < digits.length; i++) {
+            product = product * Long.parseLong(digits[i]);
+        }
+        return product;
+    }
+
+    public static long checkSum(long input) {
+        String inputNumber = String.valueOf(input);
+        long sum = 0;
+        String digits[] = inputNumber.split("");
+
+        for (int i = 0; i < digits.length; i++) {
+            sum = sum + Long.parseLong(digits[i]);
+        }
+        return sum;
+    }
+
+    public static boolean checkHappy(long input) {
+        if (input == 1 || input == 7)
+            return true;
+        long sum = input;
+        long x = input;
+
+        while(sum > 9) {
+            sum = 0;
+
+            while (x > 0) {
+                long d = x%10;
+                sum += d*d;
+                x/=10;
+            }
+            if (sum == 1)
+                return true;
+            x = sum;
+        }
+        if (sum == 7)
+            return true;
+        return false;
+    }
+
+    public static boolean checkJumping(long input) {
+        String inputString = String.valueOf(input);
+        char[] digits = inputString.toCharArray();
+        boolean jumpingNumber;
+
+        if(digits.length == 1) {
+            jumpingNumber = true;
+        } else {
+            jumpingNumber = true;
+            for (int i = 0; i < digits.length - 1; i++) {
+                if (digits[i] != (digits[i + 1] + 1) && digits[i] != (digits[i + 1] - 1)) {
+                    jumpingNumber = false;
+                }
+            }
+        }
+        return jumpingNumber;
+    }
+
+    public static String checkMutuallyExclusive(List<String> inputList) {
+        if (inputList.contains("even") && inputList.contains("odd")) {
+            return "EVEN, ODD";
+        } else if (inputList.contains("duck") && inputList.contains("spy")) {
+            return "DUCK, SPY";
+        } else if (inputList.contains("sunny") && inputList.contains("square")) {
+            return "SUNNY, SQUARE";
+        } else if (inputList.contains("happy") && inputList.contains("sad")) {
+            return "HAPPY, SAD";
+        } else if (inputList.contains("-even") && inputList.contains("-odd")) {
+            return "-EVEN, -ODD";
+        } else if (inputList.contains("-duck") && inputList.contains("-spy")) {
+            return "-DUCK, -SPY";
+        } else if (inputList.contains("-sunny") && inputList.contains("-square")) {
+            return "-SUNNY, -SQUARE";
+        } else if (inputList.contains("-happy") && inputList.contains("-sad")) {
+            return "-HAPPY, -SAD";
+        } else if (inputList.contains("even") && inputList.contains("-even")) {
+            return "EVEN, -EVEN";
+        } else if (inputList.contains("odd") && inputList.contains("-odd")) {
+            return "ODD, -ODD";
+        } else if (inputList.contains("buzz") && inputList.contains("-buzz")) {
+            return "BUZZ, -BUZZ";
+        } else if (inputList.contains("duck") && inputList.contains("-duck")) {
+            return "DUCK, -DUCK";
+        } else if (inputList.contains("palindromic") && inputList.contains("-palindromic")) {
+            return "PALINDROMIC, -PALINDROMIC";
+        } else if (inputList.contains("gapful") && inputList.contains("-gapful")) {
+            return "GAPFUL, -GAPFUL";
+        } else if (inputList.contains("spy") && inputList.contains("-spy")) {
+            return "SPY, -SPY";
+        } else if (inputList.contains("square") && inputList.contains("-square")) {
+            return "SQUARE, -SQUARE";
+        } else if (inputList.contains("sunny") && inputList.contains("-sunny")) {
+            return "SUNNY, -SUNNY";
+        } else if (inputList.contains("jumping") && inputList.contains("-jumping")) {
+            return "JUMPING, -JUMPING";
+        } else if (inputList.contains("happy") && inputList.contains("-happy")) {
+            return "HAPPY, -HAPPY";
+        } else if (inputList.contains("sad") && inputList.contains("-sad")) {
+            return "SAD, -SAD";
+        } else {
+            return "YES";
+        }
+    }
+
+    public static boolean filterProperty(String property, long input) {
+        if (property.equalsIgnoreCase("buzz")) {
+            return checkBuzz(input);
+        } else if (property.equalsIgnoreCase("duck")) {
+            return checkDuck(input);
+        } else if (property.equalsIgnoreCase("palindromic")) {
+            return checkPalindrome(input);
+        } else if (property.equalsIgnoreCase("gapful")) {
+            return checkGapful(input);
+        } else if (property.equalsIgnoreCase("spy")) {
+            return checkSpy(input);
+        } else if (property.equalsIgnoreCase("even")) {
+            return checkEven(input);
+        } else if (property.equalsIgnoreCase("odd")) {
+            return !checkEven(input);
+        } else if (property.equalsIgnoreCase("sunny")) {
+            return checkSunny(input);
+        } else if (property.equalsIgnoreCase("square")) {
+            return checkSquare(input);
+        } else if (property.equalsIgnoreCase("jumping")) {
+            return checkJumping(input);
+        } else if (property.equalsIgnoreCase("happy")) {
+            return checkHappy(input);
+        } else if (property.equalsIgnoreCase("sad")) {
+            return !checkHappy(input);
+        } else if (property.equalsIgnoreCase("-buzz")) {
+            return !checkBuzz(input);
+        } else if (property.equalsIgnoreCase("-duck")) {
+            return !checkDuck(input);
+        } else if (property.equalsIgnoreCase("-palindromic")) {
+            return !checkPalindrome(input);
+        } else if (property.equalsIgnoreCase("-gapful")) {
+            return !checkGapful(input);
+        } else if (property.equalsIgnoreCase("-spy")) {
+            return !checkSpy(input);
+        } else if (property.equalsIgnoreCase("-even")) {
+            return !checkEven(input);
+        } else if (property.equalsIgnoreCase("-odd")) {
+            return checkEven(input);
+        } else if (property.equalsIgnoreCase("-sunny")) {
+            return !checkSunny(input);
+        } else if (property.equalsIgnoreCase("-square")) {
+            return !checkSquare(input);
+        } else if (property.equalsIgnoreCase("-jumping")) {
+            return !checkJumping(input);
+        } else if (property.equalsIgnoreCase("-happy")) {
+            return !checkHappy(input);
+        } else if (property.equalsIgnoreCase("-sad")) {
+            return checkHappy(input);
+        } else {
+            return false;
+        }
+    }
+
+    public static void amazingNumbers() {
+        System.out.println("Enter a request");
+        Scanner scanner = new Scanner(System.in);
+        String inputScanner = scanner.nextLine().toLowerCase(Locale.ROOT);
+        long input;
+        long input2 = 0;
+        List<String> propertyList = new LinkedList<>();
+        String[] allPropertiesArray = {"buzz", "duck", "palindromic", "gapful", "spy", "even", "odd", "sunny", "square", "jumping", "happy", "sad", "-buzz", "-duck", "-palindromic", "-gapful", "-spy", "-even", "-odd", "-sunny", "-square", "-jumping", "-happy", "-sad"};
+
+        if (inputScanner.contains(" ")) {
+            String[] parts = inputScanner.split(" ");
+            input = Long.parseLong(parts[0]);
+            input2 = Long.parseLong(parts[1]);
+            if (parts.length == 3) {
+                String singlePart = parts[2];
+                String[] subParts = new String[1];
+                subParts[0] = singlePart;
+                propertyList.addAll(Arrays.asList(subParts));
+            } else {
+                String[] subParts = Arrays.copyOfRange(parts, 2, parts.length);
+                propertyList.addAll(Arrays.asList(subParts));
+            }
+        } else {
+            input = Long.parseLong(inputScanner);
+        }
+
+        while (input != 0) {
+            if (input < 0 || input2 < 0) {
+                if (input < 0) {
+                    System.out.println("The first parameter should be a natural number or zero");
+                } else {
+                    System.out.println("The second parameter should be a natural number or zero");
+                }
+            } else if (input2 == 0) {
+                System.out.println("Properties of " + input);
+                System.out.println(checkEven(input) ? "even: true\nodd: false" : "even: false\nodd: true");
+                System.out.println(checkBuzz(input) ? "buzz: true" : "buzz: false");
+                System.out.println(checkDuck(input) ? "duck: true" : "duck: false");
+                System.out.println(checkPalindrome(input) ? "palindromic: true" : "palindromic: false");
+                System.out.println(checkGapful(input) ? "gapful: true" : "gapful: false");
+                System.out.println(checkSpy(input) ? "spy: true" : "spy: false");
+                System.out.println(checkSunny(input) ? "sunny: true" : "sunny: false");
+                System.out.println(checkSquare(input) ? "square: true" : "square: false");
+                System.out.println(checkJumping(input) ? "jumping: true" : "jumping: false");
+                System.out.println(checkHappy(input) ? "happy: true\nsad: false" : "happy: false\nsad: true");
+            } else if (propertyList.size() == 0) {
+                for (int i = 0; i < input2; i++) {
+                    long inputIterator = input + i;
+                    System.out.println(inputIterator + " is " + (checkEven(inputIterator) ? "even" : "odd") + (checkBuzz(inputIterator) ? ", buzz" : "") + (checkDuck(inputIterator) ? ", duck" : "") + (checkPalindrome(inputIterator) ? ", palindromic" : "") + (checkGapful(inputIterator) ? ", gapful" : "") + (checkSpy(inputIterator) ? ", spy" : "") + (checkSunny(inputIterator) ? ", sunny" : "") + (checkSquare(inputIterator) ? ", square" : "") + (checkJumping(inputIterator) ? ", jumping" : "") + (checkHappy(inputIterator) ? ", happy" : ", sad") + ".");
+                }
+            } else {
+                if (checkProperties(allPropertiesArray, propertyList).size() == 1) {
+                        System.out.println("The property [" + propertyList.get(0) + "] is wrong.\nAvailable properties: [EVEN, ODD, BUZZ, DUCK, PALINDROMIC, GAPFUL, SPY, SQUARE, SUNNY, JUMPING, HAPPY, SAD]");
+                    } else if (checkProperties(allPropertiesArray, propertyList).size() > 1) {
+                        System.out.print("The properties [");
+                        for (int i = 0; i < propertyList.size() - 1; i++) {
+                            System.out.print(propertyList.get(i) + ", ");
+                        }
+                        System.out.print(propertyList.get(propertyList.size() - 1));
+                        System.out.print("] are wrong.\nAvailable properties: [EVEN, ODD, BUZZ, DUCK, PALINDROMIC, GAPFUL, SPY, SQUARE, SUNNY, JUMPING, HAPPY, SAD]");
+                } else {
+                    if (!checkMutuallyExclusive(propertyList).equalsIgnoreCase("YES")) {
+                        System.out.println("The request contains mutually exclusive properties: [" + checkMutuallyExclusive(propertyList) + "]\n" +
+                                "There are no numbers with these properties.");
+                    } else {
+                        int k = 0;
+                        long inputIterator;
+                        for (int l = 0; k < input2; l++) {
+                            inputIterator = input + l;
+                            boolean[] propertyChecker = new boolean[propertyList.size()];
+
+                            for (int i = 0; i < propertyList.size(); i++) {
+                                if (filterProperty(propertyList.get(i), inputIterator)) {
+                                    propertyChecker[i] = true;
+                                } else {
+                                    propertyChecker[i] = false;
+                                }
+                            }
+
+                            if (areAllTrue(propertyChecker)) {
+                                System.out.println(inputIterator + " is " + (checkEven(inputIterator) ? "even" : "odd") + (checkBuzz(inputIterator) ? ", buzz" : "") + (checkDuck(inputIterator) ? ", duck" : "") + (checkPalindrome(inputIterator) ? ", palindromic" : "") + (checkGapful(inputIterator) ? ", gapful" : "") + (checkSpy(inputIterator) ? ", spy" : "") + (checkSunny(inputIterator) ? ", sunny" : "") + (checkSquare(inputIterator) ? ", square" : "") + (checkJumping(inputIterator) ? ", jumping" : "") + (checkHappy(inputIterator) ? ", happy" : ", sad") + ".");
+                                k++;
+                            }
+                        }
+                    }
+                }
+                propertyList.clear();
+            }
+
+                System.out.println("Enter a request");
+                inputScanner = scanner.nextLine().toLowerCase(Locale.ROOT);
+
+            if (inputScanner.contains(" ")) {
+                String[] parts = inputScanner.split(" ");
+                input = Long.parseLong(parts[0]);
+                input2 = Long.parseLong(parts[1]);
+                if (parts.length == 3) {
+                    String singlePart = parts[2];
+                    String[] subParts = new String[1];
+                    subParts[0] = singlePart;
+                    propertyList.addAll(Arrays.asList(subParts));
+                } else {
+                    String[] subParts = Arrays.copyOfRange(parts, 2, parts.length);
+                    propertyList.addAll(Arrays.asList(subParts));
+                }
+            } else {
+                input = Long.parseLong(inputScanner);
+            }
+            }
+            System.out.println("Goodbye!");
+        }
+    }
